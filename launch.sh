@@ -6,6 +6,9 @@ nginx
 
 # Write Drill REST call to json
 
+while true
+do
+
 # Get connected Wifi Clients into: /connected_devices.json
 curl -X POST -H "Content-Type: application/json" -d '{"queryType":"SQL", "query": "select t.datetime, t.mac as client_mac,t.sensor as sensor_name,t.signal as signal_strength from dfs.root.`/mapr-retail-demo/sensors-connecteddevices-db` t where t.datetime in (select t.datetime from dfs.root.`/mapr-retail-demo/sensors-connecteddevices-db` t group by t.datetime order by t.datetime desc limit 1)"}' http://$MAPR_IP:8047/query.json > /connected_devices.json
 
@@ -35,3 +38,4 @@ EOF
 # Fix the html table layout
 sed -i -e 's/\t/<\/td><td>/g' /usr/share/nginx/html/index.html
 
+done
